@@ -8,9 +8,9 @@
 
 namespace PWMGenerator
 {
-	void sineWave( float _period, 
-		       float _amplitude, 
-		       uint8_t _min, 
-		       uint8_t _max, 
-		       uint8_t _pin         );
+	int sineWave( const float _period, 
+    	              const float _amplitude, 
+		      const uint16_t _min, 
+		      const uint16_t _max
+		       );
 };
