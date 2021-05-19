@@ -24,4 +24,5 @@ namespace Hardware
 	extern ADCDACPi adcdac;
 	
 
+	extern bool threadRunning;
 }

@@ -4,7 +4,8 @@
 namespace Hardware
 {
 	ADCDACPi adcdac;
-
+	bool     threadRunning;
+	
 	void setup()
 	{
 
@@ -22,11 +23,15 @@ namespace Hardware
         	// Set the DAC gain to 1 which will give a voltage range of 0 to 2.048V.
         	adcdac.set_dac_gain(1);
 
+		threadRunning = true;
 	}
 
 	void update()
 	{
+		while ( threadRunning )
+		{
 
+		}
 	}
 
 
