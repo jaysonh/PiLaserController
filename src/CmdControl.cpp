@@ -1,0 +1,34 @@
+#include "CmdControl.h"
+
+namespace CmdControl
+{
+
+        const char * myfifo = "/tmp/laserControl";
+        const int    SLEEP_TIME = 1000000;
+        const int    MAX_COMMAND_LENGTH = 80;
+	
+	bool running = true;
+
+	void setup()
+	{
+		mkfifo(myfifo, 0666);
+	}
+
+	void update()
+	{
+		while( running )
+		{
+			int fd1 = open( myfifo, O_RDONLY);
+			char commandInput[80];
+			int bytesRead = read(fd1, commandInput, MAX_COMMAND_LENGTH);
+
+			if(bytesRead > -1 )
+			{
+				printf("text from pipe: %s numBytes: %i\n", commandInput, bytesRead); 
+			}
+			close( fd1 );
+			usleep( 1000 * 1000 );
+		}
+	}
+}
+

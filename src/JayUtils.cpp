@@ -1,6 +1,6 @@
 #include "JayUtils.h"
 
-namespace JayUtils
+namespace JUtils
 {
 
 /*	float map( float _v, float _inMin, float _inMax, float _outMin, float _outMax, bool _clamp)

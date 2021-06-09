@@ -1,4 +1,6 @@
+
 #include "TestSignal.h"
+#include <chrono>
 
 namespace TestSignal
 {
@@ -6,12 +8,14 @@ namespace TestSignal
 
 	void update()
 	{
+		Hardware::setLaserCol( 0, 0, 255 );
+
 		while( threadRunning )
 		{
-			int v = PWMGenerator::sineWave( 5.00, 1.0, 0, 4096 );
-			Hardware::setLaserPos( v, v );
-
-			std::cout << "v: " << v << std::endl;
+			int x = PWMGenerator::sineWave( 20.1, 1.0, 0, 4096 );
+			int y = PWMGenerator::cosWave ( 20.1, 1.0, 0, 4096 );
+			Hardware::setLaserPos( x, y );
+			
 		}
 	}
 }
