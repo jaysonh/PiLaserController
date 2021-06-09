@@ -2,6 +2,6 @@
 
 namespace CmdList
 {
-	const std::vector<int> m_Vec = {1,2,3};
+	const std::vector<std::string> commands = {"exit"};
 
 }
