@@ -6,10 +6,11 @@ namespace CmdHandler
 	{
 		for( auto c : CmdList::commands)
 		{
-			if (_cmd.rfind(c, 0) == 0) 
+			if (_cmd.rfind(c.name, 0) == 0) 
 			{
   				// s starts with prefix
-				std::cout << "found it ok"<< std::endl;
+				std::cout << "found: " << c.name << std::endl;
+				c.function(0);
 			}
 		}
 

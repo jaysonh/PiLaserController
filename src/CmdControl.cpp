@@ -10,7 +10,9 @@ namespace CmdControl
 
 	void setup()
 	{
+		CmdList::setup();
 		mkfifo(myfifo, 0666);
+
 	}
 
 	void update()
