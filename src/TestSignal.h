@@ -5,7 +5,7 @@
 
 namespace TestSignal
 {
-	void update();
+	extern void * update( void * );
 
 	extern bool threadRunning;
 }

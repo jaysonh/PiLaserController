@@ -6,18 +6,23 @@ namespace CmdControl
         const int    SLEEP_TIME = 1000000;
         const int    MAX_COMMAND_LENGTH = 80;
 	
-	bool running = true;
+	bool threadRunning = true;
 
 	void setup()
 	{
 		CmdList::setup();
 		mkfifo(myfifo, 0666);
-
+		threadRunning = true;
 	}
 
-	void update()
+	void closeComm()
 	{
-		while( running )
+		threadRunning = false;
+	}
+
+	void * update(void *)
+	{
+		while( threadRunning )
 		{
 			int fd1 = open( myfifo, O_RDONLY);
 			char commandInput[ MAX_COMMAND_LENGTH ];
@@ -35,6 +40,8 @@ namespace CmdControl
 			close( fd1 );
 			usleep( 1000 * 1000 );
 		}
+
+		return NULL;
 	}
 }
 

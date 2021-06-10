@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include "Hardware.h"
+#include "CmdControl.h"
 
 namespace CmdList
 {

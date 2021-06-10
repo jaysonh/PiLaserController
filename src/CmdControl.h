@@ -12,10 +12,11 @@
 namespace CmdControl
 {
 	extern void setup();
-	extern void update();
+	extern void * update(void *);
+	extern void closeComm();
 
         extern const char * myfifo;// = "/tmp/laserControl";
         extern const int    SLEEP_TIME;// = 1000000;
         extern const int    MAX_COMMAND_LENGTH;// = 80;
-	extern       bool   running;
+	extern       bool   threadRunning;
 }

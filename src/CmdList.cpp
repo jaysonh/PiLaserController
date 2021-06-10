@@ -14,6 +14,9 @@ namespace CmdList
 	{
 		// stop the hardware running
 		Hardware::close();
+		
+		// stop the communication listener
+		CmdControl::closeComm();
 
 		// hard exit the application
 		exit(EXIT_FAILURE);
