@@ -11,10 +11,6 @@ namespace Hardware
 
         	wiringPiSetup();
 		
-		//pinMode( PinOut::redPin, OUTPUT );
-		//pinMode( PinOut::grnPin, OUTPUT );
-		//pinMode( PinOut::bluPin, OUTPUT );
-
         	softPwmCreate( PinOut::redPin, 0, PinOut::pwmRange );
         	softPwmCreate( PinOut::grnPin, 0, PinOut::pwmRange );
 	        softPwmCreate( PinOut::bluPin, 0, PinOut::pwmRange );
@@ -38,6 +34,13 @@ namespace Hardware
 		}
 	}
 
+	void close()
+	{
+		threadRunning = false;
+
+		setLaserCol( 0, 0, 0 );
+		setLaserPos( laserCentreX, laserCentreY );
+	}
 
 	void setLaserPos( int16_t x, int16_t y )
 	{
@@ -45,14 +48,10 @@ namespace Hardware
                 adcdac.set_dac_raw( y, PinOut::yPin );
 		
         	if ( pointDelay > 0 ) usleep( pointDelay );
-	
 	}
 
 	void setLaserCol( int16_t r, int16_t g, int16_t b )
 	{
-		//digitalWrite( PinOut::redPin, r );
-		//digitalWrite( PinOut::grnPin, g );
-		//digitalWrite( PinOut::bluPin, b );
 		setLaserRed( r );
 		setLaserGrn( g );
 		setLaserBlu( b );

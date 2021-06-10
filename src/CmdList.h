@@ -4,6 +4,7 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
+#include "Hardware.h"
 
 namespace CmdList
 {
@@ -14,11 +15,17 @@ namespace CmdList
 			name     = _name;
 			function = _function;
 		}
+		
 		std::string name;
 		int (*function)(int *, int );
 	};
 
  	extern std::vector< Cmd > commands; 
-	extern int exitApp( int * _args, int numArgs );
+
 	extern void setup();
+
+	// Each function which is run  needs to take a pointer to an int array and an int with the num arguments
+	
+	// exits the application and stops the laser running
+	extern int exitApp( int * _args, int numArgs );
 }

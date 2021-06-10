@@ -22,6 +22,7 @@ namespace Hardware
 {
 	void setup();
 	void update();
+	void close();
 
 	void setLaserPos( int16_t x, int16_t y );
 	void setLaserCol( int16_t r, int16_t g, int16_t b );
@@ -35,4 +36,6 @@ namespace Hardware
 
 	extern bool threadRunning;
 	const int pointDelay = 1;
+	const int laserCentreX = 0;
+	const int laserCentreY = 0;
 }
