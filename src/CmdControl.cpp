@@ -31,7 +31,7 @@ namespace CmdControl
 			if(bytesRead > -1 )
 			{
 				std::string cmdStr( commandInput );				
-				printf("text from pipe: %s numBytes: %i\n", commandInput, bytesRead); 
+				printf("recv cmd: %s numBytes: %i\n", commandInput, bytesRead); 
 
 				CmdHandler::check( cmdStr );
 			}

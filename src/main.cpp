@@ -33,21 +33,10 @@ int main()
 	pthread_t laserThread;
 	pthread_create( &laserThread, NULL, TestSignal::update, NULL);
 
-	//CmdControl::update();
-	//thread controlThread( CmdControl::update );
-	//thread laserThread( TestSignal::update );
-	//thread laserThread( Hardware::update );
-	//thread updateThread( TestSignal::update );
-	
-    	//std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
-
-	//while( true )
-	//{
-	//	TestSignal::update();
-	//}
-
 	pthread_join( commThread,  NULL );
 	pthread_join( laserThread, NULL );	
+
+	Hardware::close();
 	
 	return 0;
 }

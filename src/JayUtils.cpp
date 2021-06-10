@@ -48,7 +48,6 @@ namespace JString
 		// convert strings to int and store 
 		for( auto s : strList )
 		{
-			std::cout << "storing: " << s << std::endl;
 			intList.push_back( atoi( s.c_str() ) );
 		}
 

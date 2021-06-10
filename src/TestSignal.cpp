@@ -8,7 +8,7 @@ namespace TestSignal
 
 	void * update( void * )
 	{
-		Hardware::setLaserCol( 0, 0, 255 );
+		Hardware::setLaserCol( 125, 0, 0 );
 
 		while( threadRunning )
 		{

@@ -36,10 +36,14 @@ namespace Hardware
 
 	void close()
 	{
-		threadRunning = false;
 
 		setLaserCol( 0, 0, 0 );
 		setLaserPos( laserCentreX, laserCentreY );
+
+		// wait a little for the hardware to update
+		usleep(1000 * 1000);
+
+		threadRunning = false;
 	}
 
 	void setLaserPos( int16_t x, int16_t y )

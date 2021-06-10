@@ -29,4 +29,7 @@ namespace CmdList
 	
 	// exits the application and stops the laser running
 	extern int exitApp( int * _args, int numArgs );
+	
+	// set colour of the laser
+	extern int setCol(int * _args, int numArgs ); // 0-red 1-green 2-blue
 }
