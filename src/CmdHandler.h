@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include "CmdList.h"
-
+#include "JayUtils.h"
 #include <stdio.h>
 #include <string.h>
 
