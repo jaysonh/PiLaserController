@@ -5,10 +5,14 @@ namespace Hardware
 {
 	ADCDACPi adcdac;
 	bool     threadRunning;
+
+	int r = 0;
+	int g = 0;
+	int b = 0;
+	bool laserBlank = true;
 	
 	void setup()
 	{
-
         	wiringPiSetup();
 		
         	softPwmCreate( PinOut::redPin, 0, PinOut::pwmRange );
@@ -24,6 +28,10 @@ namespace Hardware
         	adcdac.set_dac_gain(1);
 
 		threadRunning = true;
+		
+		// set colour to off at start
+		setLaserCol( 0, 0, 0 );
+		setBlank( true );
 	}
 
 	void update()
@@ -61,18 +69,34 @@ namespace Hardware
 		setLaserBlu( b );
 	}
 
-	void setLaserRed( int16_t r )
+	void setLaserRed( int16_t _r )
 	{
+		r = _r;
 		softPwmWrite( PinOut::redPin, r );
 	}
 
-	void setLaserGrn( int16_t g )
+	void setLaserGrn( int16_t _g )
 	{
+		g = _g;
 		softPwmWrite( PinOut::grnPin, g );
 	}
 
-	void setLaserBlu( int16_t b )
+	void setLaserBlu( int16_t _b )
 	{
+		b = _b;
 		softPwmWrite( PinOut::bluPin, b );
+	}
+
+        void setBlank( bool _state )
+	{
+		if( _state != laserBlank )
+		{
+			laserBlank = _state;
+			
+			if( laserBlank )
+				setLaserCol( 0, 0, 0 );
+			else
+				setLaserCol( r, g, b );
+		}
 	}
 }

@@ -31,11 +31,17 @@ namespace Hardware
 	void setLaserGrn( int16_t g );
 	void setLaserBlu( int16_t b );
 
+	void setBlank( bool _state );
+
 	extern ADCDACPi adcdac;
 	
-
+	extern int r;
+	extern int g;
+	extern int b;
+	extern bool laserBlank;
 	extern bool threadRunning;
 	const int pointDelay = 1;
 	const int laserCentreX = 0;
 	const int laserCentreY = 0;
+
 }

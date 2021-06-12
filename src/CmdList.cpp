@@ -8,7 +8,8 @@ namespace CmdList
 	void setup()
 	{
 		commands.push_back( Cmd("exit",   &CmdList::exitApp ));
-		commands.push_back( Cmd("setCol", &CmdList::setCol ));
+		commands.push_back( Cmd("setCol", &CmdList::setCol  ));
+		commands.push_back( Cmd("blank",  &CmdList::setBlank   ));
 	}
 
 	int exitApp( int *_args, int _numArgs )
@@ -21,6 +22,17 @@ namespace CmdList
 
 		// hard exit the application
 		exit(EXIT_FAILURE);
+		return 0;
+	}
+
+	int setBlank( int * _args, int numArgs )
+	{
+		if( numArgs == 1 )
+		{
+			int blankState = _args[0];
+			Hardware::setBlank( blankState );
+		}
+
 		return 0;
 	}
 

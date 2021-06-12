@@ -32,4 +32,6 @@ namespace CmdList
 	
 	// set colour of the laser
 	extern int setCol(int * _args, int numArgs ); // 0-red 1-green 2-blue
+
+	extern int setBlank( int * _args, int numArgs); // 
 }
