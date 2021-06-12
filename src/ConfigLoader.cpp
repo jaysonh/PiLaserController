@@ -17,15 +17,14 @@ namespace ConfigLoader
     		// File Open in the Read Mode
     		myFile_Handler.open( _file );
 	
-    		if(myFile_Handler.is_open())
+    		if( myFile_Handler.is_open() )
     		{
-        		// Keep reading the file
+        		// read the file and store it in a string
         		while(getline(myFile_Handler, myLine))
         		{
-            			// print the line on the standard output
 				jsonStr += myLine;
         		}
-    			// File Close
+
     			myFile_Handler.close();
 			
 	                json::jobject jsonConfig = json::jobject::parse( jsonStr ); 
@@ -33,11 +32,10 @@ namespace ConfigLoader
 			laserSettings.blankWaitTime   = atoi( jsonConfig.get( "blankWaitTime"  ).c_str() );
 			laserSettings.displayWaitTime = atoi( jsonConfig.get( "displayWaitTime").c_str() );
     			
-			std::cout << "blankWaitTime: " << laserSettings.blankWaitTime << " displayWait: " << laserSettings.displayWaitTime << std::endl;
 		}
     		else
     		{
-        		cout << "Unable to open json the file!";
+        		cout << "Unable to open json the file: " << _file << endl;
 	    	}
 	}
 }

@@ -13,6 +13,9 @@ namespace CmdControl
 	{
 		CmdList::setup();
 		mkfifo(myfifo, 0666);
+		// need to reset write permission her
+		// otherwise other users don't have write permission not sure why?
+		chmod(myfifo, 0666 );
 		threadRunning = true;
 	}
 
@@ -26,6 +29,7 @@ namespace CmdControl
 		while( threadRunning )
 		{
 			int fd1 = open( myfifo, O_RDONLY);
+			
 			char commandInput[ MAX_COMMAND_LENGTH ];
 			int bytesRead = read(fd1, commandInput, MAX_COMMAND_LENGTH);
 
