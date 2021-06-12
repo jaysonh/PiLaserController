@@ -3,7 +3,8 @@
 namespace CmdControl
 {
         const char * myfifo = "/tmp/laserControl";
-        const int    SLEEP_TIME = 1000000;
+        //const char * myfifo = "/var/www/html/laserControl";
+	const int    SLEEP_TIME = 1000000;
         const int    MAX_COMMAND_LENGTH = 80;
 	
 	bool threadRunning = true;

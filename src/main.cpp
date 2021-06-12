@@ -16,11 +16,14 @@
 #include <signal.h> 
 #include "TestSignal.h" 
 #include "CmdControl.h"
+#include "ConfigLoader.h"
 
 using namespace std;
 
 int main()
 {
+	ConfigLoader::load();
+
 	// set up named pipe for control communication
 	CmdControl::setup();
 
