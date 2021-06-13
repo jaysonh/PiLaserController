@@ -35,12 +35,6 @@ namespace Hardware
 
 	extern ADCDACPi adcdac;
 	
-	extern int r;
-	extern int g;
-	extern int b;
-	extern int savedR;
-	extern int savedG;
-	extern int savedB;
 	extern int lastR;
 	extern int lastG;
 	extern int lastB;
