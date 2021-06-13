@@ -27,6 +27,7 @@ namespace CmdList
 
 	int setBlank( int * _args, int numArgs )
 	{
+		std::cout << "setBlank numArgs: " << numArgs << endl;
 		if( numArgs == 1 )
 		{
 			int blankState = _args[0];

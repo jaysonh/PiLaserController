@@ -30,15 +30,19 @@ int main()
 	// setup the hardware
 	Hardware::setup();
 
+	// Start the communication thread
 	pthread_t  commThread;
 	pthread_create( &commThread, NULL, CmdControl::update, NULL);
 
+	// Start the laser thread
 	pthread_t laserThread;
 	pthread_create( &laserThread, NULL, TestSignal::update, NULL);
 
+	// on finish close the threads
 	pthread_join( commThread,  NULL );
 	pthread_join( laserThread, NULL );	
 
+	// shutdown the hardware
 	Hardware::close();
 	
 	return 0;

@@ -6,9 +6,17 @@ namespace Hardware
 	ADCDACPi adcdac;
 	bool     threadRunning;
 
+	int savedR = 0;
+	int savedG = 0;
+	int savedB = 0;
+
+	int lastR = 0;
+	int lastG = 0;
+	int lastB = 0;
 	int r = 0;
 	int g = 0;
 	int b = 0;
+
 	bool laserBlank = true;
 	
 	void setup()
@@ -71,20 +79,45 @@ namespace Hardware
 
 	void setLaserRed( int16_t _r )
 	{
-		r = _r;
-		softPwmWrite( PinOut::redPin, r );
+		int outR = _r;
+
+		lastR = outR;
+		if( laserBlank )
+		{
+			outR = 0;
+		}		
+		//lastR = outR;
+		//std::cout << "setting red: " << outR <<endl;
+		softPwmWrite(PinOut::redPin, outR);
 	}
 
 	void setLaserGrn( int16_t _g )
 	{
-		g = _g;
-		softPwmWrite( PinOut::grnPin, g );
+		int outG = _g;
+                
+		lastG = outG;
+		if( laserBlank )
+                {
+                        outG = 0;
+                }
+                //lastG = outG;            
+		//std::cout << "setting green: " << outG<< endl;                                                                                                                                                                                                                                                                                                                                 std::cout << "setting blue: " << outB << endl;
+                softPwmWrite( PinOut::grnPin, outG );
 	}
 
 	void setLaserBlu( int16_t _b )
 	{
-		b = _b;
-		softPwmWrite( PinOut::bluPin, b );
+		int outB = _b;
+		lastB = outB;
+
+		if( laserBlank )
+		{
+			outB = 0;
+		}
+		//lastB = outB; 
+
+		//std::cout << "setting blue: " << outB << endl;
+		softPwmWrite( PinOut::bluPin, outB );
 	}
 
         void setBlank( bool _state )
@@ -92,11 +125,19 @@ namespace Hardware
 		if( _state != laserBlank )
 		{
 			laserBlank = _state;
+			std::cout << "setting blank: " << (int)laserBlank << std::endl;
 			
 			if( laserBlank )
-				setLaserCol( 0, 0, 0 );
-			else
-				setLaserCol( r, g, b );
+			{
+				savedR = lastR;
+				savedG = lastG;
+				savedB = lastB;
+
+				setLaserCol( 0, 0, 0 ); // to update laser colours
+			}else
+			{
+				setLaserCol( savedR, savedG, savedB );
+			}
 		}
 	}
 }

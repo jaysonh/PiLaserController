@@ -36,12 +36,13 @@ namespace CmdControl
 			if(bytesRead > -1 )
 			{
 				std::string cmdStr( commandInput );				
-				printf("recv cmd: %s numBytes: %i\n", commandInput, bytesRead); 
+				std::cout << "recv numBytes: " << bytesRead << " cmd: " << commandInput  << "#" << std::endl; 
 
 				CmdHandler::check( cmdStr );
 			}
 
-
+			memset( commandInput, 0, sizeof commandInput );
+			
 			close( fd1 );
 			usleep( 1000 * 1000 );
 		}

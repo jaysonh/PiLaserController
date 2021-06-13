@@ -38,6 +38,13 @@ namespace Hardware
 	extern int r;
 	extern int g;
 	extern int b;
+	extern int savedR;
+	extern int savedG;
+	extern int savedB;
+	extern int lastR;
+	extern int lastG;
+	extern int lastB;
+
 	extern bool laserBlank;
 	extern bool threadRunning;
 	const int pointDelay = 1;
