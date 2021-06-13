@@ -14,7 +14,7 @@ namespace JMath
 {
 	const float PI     =  3.1415926535;
 	const float TWO_PI = 6.28318530718;
-
+	const float DEG_TO_RAD = 0.017453292519943295769236907684886f;
 }
 
 namespace JString

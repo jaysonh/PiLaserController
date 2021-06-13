@@ -4,11 +4,15 @@
 <title>PiLaser Control</title>
 </head>
         <body>
-        Laser Control:
-        <form method="get" action="laserControl.php">
-                <input type="submit" value="ON"  name="on">
-                <input type="submit" value="OFF" name="off">
+        Blank Laser:
+        <form method="get" action="setBlank.php">
+                <input type="submit" value="BLANK"   name="BLANK">
+                <input type="submit" value="UNBLANK" name="UNBLANK">
         </form>
+	Exit Laser Application:
+	<form method="get" action="laserControl.php">
+		<input type="submit" value="EXIT" name="ON">
+	</form>
         <?php
         ?>
         </body>

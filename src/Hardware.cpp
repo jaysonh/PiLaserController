@@ -74,12 +74,12 @@ namespace Hardware
 	{
 		int outR = _r;
 
-		lastR = outR;
+		if(!laserBlank) lastR = outR;
 		if( laserBlank )
 		{
 			outR = 0;
 		}		
-
+		
 		softPwmWrite(PinOut::redPin, outR);
 	}
 
@@ -87,7 +87,7 @@ namespace Hardware
 	{
 		int outG = _g;
                 
-		lastG = outG;
+		if( !laserBlank ) lastG = outG;
 		if( laserBlank )
                 {
                         outG = 0;
@@ -99,7 +99,7 @@ namespace Hardware
 	void setLaserBlu( int16_t _b )
 	{
 		int outB = _b;
-		lastB = outB;
+		if( !laserBlank ) lastB = outB;
 
 		if( laserBlank )
 		{
@@ -115,7 +115,7 @@ namespace Hardware
 		{
 			laserBlank = _state;
 			std::cout << "setting blank: " << (int)laserBlank << std::endl;
-			
+			std::cout << "lastCol: " << lastR << "," << lastG << "," << lastB << std::endl;			
 			if( laserBlank )
 			{
 				setLaserCol( 0, 0, 0 ); // to update laser colours
