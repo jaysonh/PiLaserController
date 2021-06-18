@@ -5,7 +5,7 @@ namespace RenderLoop
 	P2 displayBuffer1[ MAX_NUM_POINTS ];
 	P2 displayBuffer2[ MAX_NUM_POINTS ];
 
-	LaserCol lastCol;
+	LaserCol lastCol(0,0,0);
 	bool 	threadRunning = true;
 
 	P2 	* ptrCurrentDisplayBuffer, *ptrHiddenDisplayBuffer;
@@ -73,7 +73,7 @@ namespace RenderLoop
     				ptrHiddenDisplayBuffer  = ptrAux;
 
 	    			needSwapFlag = false;
-				Hardware::setLaserCol( 255, 0, 0 );
+				//Hardware::setLaserCol( 255, 0, 0 );
 				Hardware::setBlank( false );
 			
   			}	
@@ -90,11 +90,12 @@ namespace RenderLoop
 				int b = static_cast<int16_t>((ptrCurrentDisplayBuffer + readingHead)->col.b); 
  
 				LaserCol col(r,g,b);
-	
-    				if( lastCol != col )
-				{
-					//Hardware::setLaserCol( col );
-				}
+				//std::cout << col.r <<","<< col.g <<"," << col.b << std::endl;
+    				//if( lastCol != col )
+				//{
+					//std::cout << "setting col: " << col.r << ","<<col.g << ","<<col.b<< std::endl;
+					Hardware::setLaserCol( col );
+				//}
 				lastCol = col;
 				Hardware::setLaserPos((int)adcX, (int)adcY);
 

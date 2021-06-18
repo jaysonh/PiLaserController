@@ -11,7 +11,7 @@ namespace PointDisplay
 		Renderer2D::clearBlueprint();
 
 		// setup a cirlce for test
-		float r = 25.0;
+		float r = 50.0;
 
 		for( float a = 0.0; a < TWO_PI; a+= 0.1 )
 		{
@@ -22,9 +22,7 @@ namespace PointDisplay
 			p.blank = false;
 			Renderer2D::addToBlueprint( p );
 		}
-		std::cout << "renderFigure() "<< std::endl;
 		Renderer2D::renderFigure();
-		std::cout << "Loaded renderer2d" << std::endl;
 		Hardware::setBlank( false );
 	}
 
