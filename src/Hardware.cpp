@@ -6,9 +6,9 @@ namespace Hardware
 	ADCDACPi adcdac;
 	bool     threadRunning;
 
-	int lastR = 0;
-	int lastG = 0;
-	int lastB = 0;
+	uint8_t lastR = 0;
+	uint8_t lastG = 0;
+	uint8_t lastB = 0;
 
 	bool laserBlank = true;
 	
@@ -63,14 +63,19 @@ namespace Hardware
         	if ( pointDelay > 0 ) usleep( pointDelay );
 	}
 
-	void setLaserCol( int16_t r, int16_t g, int16_t b )
+	void setLaserCol( LaserCol c )
+	{
+		setLaserCol( c.r, c.g, c.b );
+	}
+
+	void setLaserCol(  uint8_t r, uint8_t g,  uint8_t b )
 	{
 		setLaserRed( r );
 		setLaserGrn( g );
 		setLaserBlu( b );
 	}
 
-	void setLaserRed( int16_t _r )
+	void setLaserRed(  uint8_t _r )
 	{
 		int outR = _r;
 
@@ -83,7 +88,7 @@ namespace Hardware
 		softPwmWrite(PinOut::redPin, outR);
 	}
 
-	void setLaserGrn( int16_t _g )
+	void setLaserGrn(  uint8_t _g )
 	{
 		int outG = _g;
                 
@@ -96,7 +101,7 @@ namespace Hardware
                 softPwmWrite( PinOut::grnPin, outG );
 	}
 
-	void setLaserBlu( int16_t _b )
+	void setLaserBlu(  uint8_t _b )
 	{
 		int outB = _b;
 		if( !laserBlank ) lastB = outB;

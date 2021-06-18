@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "JayUtils.h"
+#include "LaserCol.h"
 
 using namespace JMath;
 
@@ -26,18 +27,14 @@ class P2 {
       x = _x;
       y = _y;
       blank = _blank;
-      r = _r;    
-      g = _g; 
-      b = _b; 
+      col = LaserCol( _r, _g, _b );
     }
 
     P2(const P2& _point) {
-      x = _point.x;
-      y = _point.y;
-      blank       = _point.blank;
-      r = _point.r;    
-      g = _point.g; 
-      b = _point.b; 
+      x     = _point.x;
+      y     = _point.y;
+      blank = _point.blank;
+      col   = _point.col;
     }
  
 
@@ -62,9 +59,7 @@ class P2 {
  	x = _point.x;
         y = _point.y;
         blank = _point.blank;
-        r = _point.r;                                                                                                                                                                g = _point.g;                                                                                                                                                                b = _point.b;
-	g = _point.g;
-	b = _point.b;
+        col = _point.col;
     }
 
 
@@ -76,9 +71,7 @@ class P2 {
       x = _point.x;
       y = _point.y;
       blank       = _point.blank;
-      r = _point.r;
-      g = _point.g;
-      b = _point.b;
+      col = _point.col;
     }
 
     // Transfom points (do not modify points in the "moldBuffer" it to avoid approximation drifts!)
@@ -99,10 +92,10 @@ class P2 {
       x *= _factor;
       y *= _factor;
     }
+    LaserCol col;
 
     bool  blank;
     float x, y;
-    int   r, g, b;
 };
 
 #endif

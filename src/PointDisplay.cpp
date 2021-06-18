@@ -6,6 +6,28 @@ namespace PointDisplay
 {
 	bool threadRunning = true;
 
+	void   init()
+	{
+		Renderer2D::clearBlueprint();
+
+		// setup a cirlce for test
+		float r = 25.0;
+
+		for( float a = 0.0; a < TWO_PI; a+= 0.1 )
+		{
+			P2 p( r * cos( a ), r * sin( a ) );
+			p.col.r = 255;
+			p.col.g = 0;
+			p.col.b = 0;	
+			p.blank = false;
+			Renderer2D::addToBlueprint( p );
+		}
+		std::cout << "renderFigure() "<< std::endl;
+		Renderer2D::renderFigure();
+		std::cout << "Loaded renderer2d" << std::endl;
+		Hardware::setBlank( false );
+	}
+
 	void * update( void * )
 	{
 		Hardware::setBlank( false );
