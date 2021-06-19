@@ -19,11 +19,14 @@
 #include "ConfigLoader.h"
 #include "RenderLoop.h"
 #include "PointDisplay.h"
+#include "PriorityManager.h"
 
 using namespace std;
 
 int main()
 {
+	PriorityManager::setup();
+	
 	ConfigLoader::load();
 
 	// set up named pipe for control communication
