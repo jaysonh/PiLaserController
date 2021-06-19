@@ -7,5 +7,5 @@ struct LaserSettings
 	const int defaultBlankWaitTime   = 5;
 
 	int displayWaitTime = defaultDisplayWaitTime;
-        int blankWaitTime;
+        int blankWaitTime   = defaultBlankWaitTime;
 };

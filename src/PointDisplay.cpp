@@ -38,11 +38,11 @@ namespace PointDisplay
 		squarePoints[8] = P2( 20,  10, 255,0,0, blank );
 		squarePoints[9] = P2( 20,  20, 255,0,0, blank );
 
-		squarePoints[10] = P2(  20, 20, 255,0,0, blank );
-		squarePoints[11] = P2(  10, 20, 255,0,0, blank );
-		squarePoints[12] = P2(  0,  20, 255,0,0, blank );
-		squarePoints[13] = P2( -10, 20, 255,0,0, blank );
-		squarePoints[14] = P2( -20, 20, 255,0,0, blank );
+		squarePoints[10] = P2(  20, 20, 0,255,0, blank );
+		squarePoints[11] = P2(  10, 20, 0,255,0, blank );
+		squarePoints[12] = P2(  0,  20, 0,255,0, blank );
+		squarePoints[13] = P2( -10, 20, 0,255,0, blank );
+		squarePoints[14] = P2( -20, 20, 0,255,0, blank );
 		
 		squarePoints[15] = P2( -20,  20, 255,0,0, blank ); 
 		squarePoints[16] = P2( -20,  10, 255,0,0, blank ); 

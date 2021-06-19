@@ -2,6 +2,7 @@
 
 #include "Hardware.h"
 #include "P2.h"
+#include "ConfigLoader.h"
 
 namespace RenderLoop
 {

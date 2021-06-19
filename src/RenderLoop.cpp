@@ -91,11 +91,12 @@ namespace RenderLoop
  
 				LaserCol col(r,g,b);
 				//std::cout << col.r <<","<< col.g <<"," << col.b << std::endl;
-    				//if( lastCol != col )
-				//{
+    				if( !(lastCol.r == col.r && lastCol.g == col.g && lastCol.b == col.b) )
+				{
 					//std::cout << "setting col: " << col.r << ","<<col.g << ","<<col.b<< std::endl;
 					Hardware::setLaserCol( col );
-				//}
+					usleep( 100000 ); // wait 10 us to change laser state
+				}
 				lastCol = col;
 				Hardware::setLaserPos((int)adcX, (int)adcY);
 
@@ -105,8 +106,11 @@ namespace RenderLoop
 				if(readingHead >= sizeBufferDisplay) readingHead = 0;
 			}
 
-			usleep(5);
+			usleep(ConfigLoader::laserSettings.displayWaitTime);
 		}
+		// Make sure to turn laser off at the end
+		Hardware::setLaserCol( 0, 0, 0 );
+
 		return NULL;
 	}
 }
