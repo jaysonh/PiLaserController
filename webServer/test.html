@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+
+<button type="submit" id="clearPtsBtn" onclick="clearPoints()">clearPoints</button>
+<button type="submit" id="sendPtsBtn"  onclick="sendPoints()" >sendPoints</button>
+
+<script>
+let pointListX = new Array();
+let pointListY = new Array();
+var numPoints = 0;
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+var cvWidth  = c.width;
+var cvHeight = c.height;
+
+var pos  =0;
+
+function sendPoints()
+{
+	console.log("sendPoints");
+	$.getJSON('sensor.php', function(data) {
+  		alert('Room temperature: '+data.temp1+', outside temperature: '+data.temp2)
+	});
+}
+
+function clearPoints() {
+  var x = document.getElementById("sendPtsBtn");
+  var activities = ['Location Zero', 'Location One', 'Location Two'];
+
+  $.ajax({
+       type: "POST",
+       url:  "tourFinderFunctions.php",
+       data: "activitiesArray="+pointListX,
+       success: function() {
+            $("#lengthQuestion").fadeOut('slow');
+       }
+  });
+
+  numPoints = 0;
+  pointListX = new Array();
+  pointListY = new Array();
+}
+var fps = 30;
+
+function draw() 
+{
+    setTimeout(function() 
+    {
+        requestAnimationFrame(draw);
+
+  	// call again next time we can draw
+  	ctx.clearRect(0, 0, cvWidth, cvHeight);
+
+  	ctx.strokeStyle = '#000';
+  	ctx.stroke();
+	ctx.beginPath();
+  	for (let i = 0; i < numPoints; i++) {
+		if(i == 0)
+			ctx.moveTo( pointListX[i], pointListY[i]);
+		else
+			ctx.lineTo(pointListX[i], pointListY[i]);
+		//ctx.rect( pointListX[i], pointListY[i], 5, 5);
+  	}
+    }, 1000 / fps);
+}
+draw();
+
+// click handler to add random rects
+window.addEventListener('click', function(event) 
+{
+  
+   if( event.clientX < cvWidth && event.clientY < cvHeight )
+   {	 
+	pointListX.push( event.clientX );
+	pointListY.push( event.clientY );
+	numPoints++;
+   }	
+});
+
+</script>
+
+</body>
+</html>
+

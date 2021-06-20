@@ -95,7 +95,7 @@ namespace RenderLoop
 				{
 					//std::cout << "setting col: " << col.r << ","<<col.g << ","<<col.b<< std::endl;
 					Hardware::setLaserCol( col );
-					usleep( 100000 ); // wait 10 us to change laser state
+					usleep( 10 ); // wait 10 us to change laser state
 				}
 				lastCol = col;
 				Hardware::setLaserPos((int)adcX, (int)adcY);
