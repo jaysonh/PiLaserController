@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Hardware.h"
 #include "CmdControl.h"
+#include "Renderer2D.h"
 
 namespace CmdList
 {
@@ -34,4 +35,6 @@ namespace CmdList
 	extern int setCol(int * _args, int numArgs ); // 0-red 1-green 2-blue
 
 	extern int setBlank( int * _args, int numArgs); // 
+
+	extern int addShape( int * _args, int numArgs );
 }

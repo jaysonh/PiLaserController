@@ -7,9 +7,10 @@ namespace CmdList
 
 	void setup()
 	{
-		commands.push_back( Cmd("exit",   &CmdList::exitApp ));
-		commands.push_back( Cmd("setCol", &CmdList::setCol  ));
-		commands.push_back( Cmd("blank",  &CmdList::setBlank   ));
+		commands.push_back( Cmd( "exit",     &CmdList::exitApp  ));
+		commands.push_back( Cmd( "setCol",   &CmdList::setCol   ));
+		commands.push_back( Cmd( "blank",    &CmdList::setBlank ));
+		commands.push_back( Cmd( "addShape", &CmdList::addShape ));
 	}
 
 	int exitApp( int *_args, int _numArgs )
@@ -46,6 +47,36 @@ namespace CmdList
 			int b = _args[2];
 
 			Hardware::setLaserCol( r, g, b );
+		}
+
+		return 0;
+	}
+
+	int addShape( int * _args, int numArgs )
+	{
+
+		if( numArgs > 4 )
+		{
+			int r = _args[0];
+                        int g = _args[1];
+                        int b = _args[2];
+
+			std::cout << "col: " << r << "," << g << "," << b << std::endl;
+			Renderer2D::clearBlueprint();
+			for( int i = 3; i < numArgs; i += 2 )
+			{
+				int x = _args[i];
+				int y = _args[i+1];
+				
+				P2 p(x, y, r, g, b, false);
+				Renderer2D:: addToBlueprint( p );				
+				std:: cout << "point: " << x << "," << y << std::endl;	
+
+			}
+
+			// now send points to the laser renderer
+                                                                                                                                                                                                                         extern const P2 getLastPoint();
+			
 		}
 
 		return 0;

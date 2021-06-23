@@ -1,0 +1,25 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width" />
+<title>PiLaser Control</title>
+</head>
+        <body>
+        Blank Laser:
+        <form method="get" action="setBlank.php">
+                <input type="submit" value="BLANK"   name="BLANK">
+                <input type="submit" value="UNBLANK" name="UNBLANK">
+        </form>
+	Exit Laser Application:
+	<form method="get" action="laserControl.php">
+		<input type="submit" value="EXIT" name="ON">
+	</form>
+	<div class="slidecontainer">
+		<label for="points">Red:</label>
+		<input type="range" id="colRed" name="colRed" min="0" max="255">
+
+	</div>
+
+        <?php
+        ?>
+        </body>
+</html>

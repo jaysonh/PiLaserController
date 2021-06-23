@@ -8,8 +8,9 @@ namespace CmdHandler
 		{
 			if (_cmd.rfind(c.name, 0) == 0) 
 			{
+				std::cout << "foundcmd: " << c.name << endl; 
 				std::vector <int> argList;
-				JString::splitInt(_cmd, argList, ' ');
+				JString::splitInt(_cmd, argList, ',');
 				
 				const int numArgs = argList.size() - 1;
 				int args[ numArgs ];
