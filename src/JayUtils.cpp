@@ -17,6 +17,10 @@ namespace JUtils
   		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 
+	float length( float _begX, float _begY, float _endX, float _endY)
+	{
+		return 0.0;
+	}
 }
 
 namespace JString

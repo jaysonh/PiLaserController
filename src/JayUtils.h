@@ -8,7 +8,7 @@ namespace JUtils
 {
 
 	float map( float _v, float _inMin, float _inMax, float _outMin, float _outMax);
-
+	float length( float _begX, float _begY, float _endX, float _endY);
 }
 
 namespace JMath

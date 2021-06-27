@@ -20,6 +20,7 @@
 #include "RenderLoop.h"
 #include "PointDisplay.h"
 #include "PriorityManager.h"
+#include "LineDisplay.h"
 
 using namespace std;
 
