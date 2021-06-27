@@ -27,6 +27,7 @@ namespace RenderLoop
 			ptrHiddenDisplayBuffer[k].col.b       = _ptrFrameBuffer[k].col.b;
     			ptrHiddenDisplayBuffer[k].blank       = _ptrFrameBuffer[k].blank;
   		}
+		std::cout << "setDisplayBuffer: " << _size << std::endl;
 
   		needSwapFlag = true;
  	 	//ATOMIC_BLOCK(ATOMIC_RESTORESTATE)

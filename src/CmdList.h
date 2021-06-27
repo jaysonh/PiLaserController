@@ -7,6 +7,7 @@
 #include "Hardware.h"
 #include "CmdControl.h"
 #include "Renderer2D.h"
+#include "AppControl.h"
 
 namespace CmdList
 {
@@ -37,4 +38,6 @@ namespace CmdList
 	extern int setBlank( int * _args, int numArgs); // 
 
 	extern int addShape( int * _args, int numArgs );
+
+	extern int restartApp( int * _args, int numArgs );
 }

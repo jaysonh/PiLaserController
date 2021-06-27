@@ -8,9 +8,11 @@
 <canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;">
 Your browser does not support the HTML canvas tag.
 </canvas>
-
-<button type="submit" id="clearPtsBtn" onclick="clearPoints()">clearPoints</button>
-<button type="submit" id="sendPtsBtn"  onclick="sendPoints()" >sendPoints</button>
+<br/>
+<button type="submit" id="restartBtn"  onclick= "sendRestart()">restart</button>
+<button type="submit" id="exitBtn"     onclick= "sendExit()">exit</button>
+<button type="submit" id="clearPtsBtn" onclick= "clearPoints()">clearPoints</button>
+<button type="submit" id="sendPtsBtn"  onclick= "sendPoints()" >sendPoints</button>
 <input  type="color"  id="laserColour" name="head" value="#e66465">
 
 <script>
@@ -25,6 +27,10 @@ var ctx = c.getContext("2d");
 var cvWidth  = c.width;
 var cvHeight = c.height;
 
+function map(x, in_min, in_max, out_min, out_max) 
+{
+      return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
 function hexToRgb(hex) 
 {
@@ -55,8 +61,11 @@ function sendPoints()
 
   	for(let i = 0; i < numPoints;i++)
   	{
-        	pointList.push( pointListX[i] );
-        	pointList.push( pointListY[i] );
+		var mX = map( pointListX[i], 0, cvWidth,  -100, 100 );
+		var mY = map( pointListY[i], 0, cvHeight, -100, 100 );
+		console.log("adding: " + mX + "," + mY);
+        	pointList.push( mX );
+        	pointList.push( mY );
   	}
 	console.log("pointList.length: " + pointList.length);
 
@@ -72,6 +81,22 @@ function sendPoints()
             			$("#lengthQuestion").fadeOut('slow');
        			}
   		});	
+}
+
+function sendExit()
+{
+	$.ajax({
+                type: "POST",
+                url:  'sendExit.php',
+                });
+}
+
+function sendRestart()
+{
+        $.ajax({
+                type: "POST",
+                url:  'sendRestart.php',
+                }); 
 }
 
 function clearPoints() {

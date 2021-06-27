@@ -11,18 +11,13 @@ namespace CmdList
 		commands.push_back( Cmd( "setCol",   &CmdList::setCol   ));
 		commands.push_back( Cmd( "blank",    &CmdList::setBlank ));
 		commands.push_back( Cmd( "addShape", &CmdList::addShape ));
+		commands.push_back( Cmd( "restart",  &CmdList::restartApp ));
 	}
 
 	int exitApp( int *_args, int _numArgs )
 	{
-		// stop the hardware running
-		Hardware::close();
-		
-		// stop the communication listener
-		CmdControl::closeComm();
+		AppControl::exitApp();
 
-		// hard exit the application
-		exit(EXIT_FAILURE);
 		return 0;
 	}
 
@@ -73,12 +68,18 @@ namespace CmdList
 				std:: cout << "point: " << x << "," << y << std::endl;	
 
 			}
-
+			Renderer2D::renderFigure();
 			// now send points to the laser renderer
                                                                                                                                                                                                                          extern const P2 getLastPoint();
 			
 		}
 
+		return 0;
+	}
+
+	int restartApp( int * _args, int numArgs )
+	{
+		AppControl::restart();
 		return 0;
 	}
 }
