@@ -14,16 +14,27 @@ Your browser does not support the HTML canvas tag.
 <button type="submit" id="clearPtsBtn" onclick= "clearPoints()">clearPoints</button>
 <button type="submit" id="sendPtsBtn"  onclick= "sendPoints()" >sendPoints</button>
 <input  type="color"  id="laserColour" name="head" value="#e66465">
-
+<br/>
+<button type="submit" id="addRectBtn"     onclick= "addRectangle()" >add rectangle</button>
+<button type="submit" id="addCircleBtn"   onclick= "addCircle()"    >add circle</button>
+<button type="submit" id="addTriangleBtn" onclick= "addTriangle()"  >add triangle</button>
+<button type="submit" id="addLineBtn"     onclick= "addLine()"      >add line</button>
 <script>
 
 let pointListX = new Array();
 let pointListY = new Array();
 
-var numPoints = 0;
+var SELECT_THRESH = 20;
+
+var numPoints =  0;
+var selected  = -1;
+
+var mouseX = 0;
+var mouseY = 0;
 
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
+
 var cvWidth  = c.width;
 var cvHeight = c.height;
 
@@ -35,19 +46,94 @@ function map(x, in_min, in_max, out_min, out_max)
 function hexToRgb(hex) 
 {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
+  
+  return result ? 
+  {
+    r: parseInt( result[1], 16 ),
+    g: parseInt( result[2], 16 ),
+    b: parseInt( result[3], 16 )
   } : null;
+}
+
+function addCircle()
+{
+	clearPoints();
+
+	var circleWidth = cvWidth/4;
+
+	for( var i = 0.0; i < Math.PI * 2.0; i+= 0.1)
+	{
+		pointListX.push( cvWidth  / 2 + Math.cos(i) * circleWidth );
+		pointListY.push( cvHeight / 2 + Math.sin(i) * circleWidth );
+		numPoints++;
+	}
+
+	pointListX.push( cvWidth  / 2 + Math.cos(0) * circleWidth );
+	pointListY.push( cvHeight / 2 + Math.sin(0) * circleWidth );
+	numPoints++;
+}
+
+function addTriangle()
+{
+	clearPoints();
+
+	var rectWidth = cvWidth / 2;
+        pointListX.push( cvWidth  / 2  );
+        pointListY.push( cvHeight / 2  - rectWidth/2);
+
+	pointListX.push( cvWidth  / 2  - rectWidth/2 );
+	pointListY.push( cvHeight / 2  + rectWidth/2 );
+
+	pointListX.push( cvWidth  / 2  + rectWidth/2 );
+	pointListY.push( cvHeight / 2  + rectWidth/2 ); 	
+
+	pointListX.push( cvWidth  / 2  );
+	pointListY.push( cvHeight / 2  - rectWidth/2);
+
+	numPoints = 4;
+}
+
+function addLine()
+{
+	clearPoints();
+
+	var rectWidth = cvWidth / 2;
+
+        pointListX.push( cvWidth  / 2 + (rectWidth / 2 ) );
+        pointListY.push( cvHeight / 2 );
+
+        pointListX.push( cvWidth  / 2 - (rectWidth / 2 ) );
+        pointListY.push( cvHeight / 2 );
+
+	numPoints = 2;
+}
+
+function addRectangle()
+{
+	clearPoints();
+	
+	var rectWidth = cvWidth / 2;
+	
+	pointListX.push( cvWidth  / 2 + ( rectWidth / 2 ) );
+	pointListY.push( cvHeight / 2 + ( rectWidth / 2 ) );
+	
+	pointListX.push( cvWidth  / 2 - ( rectWidth / 2 ) );
+	pointListY.push( cvHeight / 2 + ( rectWidth / 2 ) );
+	
+        pointListX.push( cvWidth  / 2 - ( rectWidth / 2 ) );
+        pointListY.push( cvHeight / 2 - ( rectWidth / 2 ) );
+	
+	pointListX.push( cvWidth  / 2 + ( rectWidth / 2 ) );                                                                                                                                                                 pointListY.push( cvHeight / 2 - rectWidth / 2 ); 
+	pointListY.push( cvHeight / 2 - ( rectWidth / 2 ) );
+	
+	pointListX.push( cvWidth  / 2 + ( rectWidth / 2 ) );
+	pointListY.push( cvHeight / 2 + ( rectWidth / 2 ) );
+	
+	numPoints = 5;
 }
 
 function sendPoints()
 {
-	console.log("sendPoints");
-//	$.getJSON('sensor.php', function(data) {
-//  		alert('Room temperature: '+data.temp1+', outside temperature: '+data.temp2)
-//	});
 	var pointList = [];
 	pointList.push("addShape");
 
@@ -63,10 +149,12 @@ function sendPoints()
   	{
 		var mX = map( pointListX[i], 0, cvWidth,  -100, 100 );
 		var mY = map( pointListY[i], 0, cvHeight, -100, 100 );
-		console.log("adding: " + mX + "," + mY);
+
         	pointList.push( mX );
         	pointList.push( mY );
   	}
+
+	
 	console.log("pointList.length: " + pointList.length);
 
 	var rgbLaserCol = hexToRgb( document.getElementById("laserColour").value );	
@@ -99,10 +187,10 @@ function sendRestart()
                 }); 
 }
 
-function clearPoints() {
-  var x = document.getElementById("sendPtsBtn");
-
+function clearPoints() 
+{
   numPoints = 0;
+
   pointListX = new Array();
   pointListY = new Array();
 }
@@ -128,22 +216,66 @@ function draw()
 			ctx.lineTo(pointListX[i], pointListY[i]);
 		//ctx.rect( pointListX[i], pointListY[i], 5, 5);
   	}
+
+	// draw circles over the top of points
+	for (let i = 0; i < numPoints; i++) {
+		var size = 10.0;
+		if(selected === i)
+			ctx.fillStyle = "#00FF00";
+		else 
+			ctx.fillStyle = document.getElementById("laserColour").value;
+                ctx.fillRect( pointListX[i] - size / 2, pointListY[i] - size / 2, size, size);
+        }
     }, 1000 / fps);
 }
 draw();
 
 // click handler to add random rects
-window.addEventListener('click', function(event) 
+
+let drag = false;
+
+window.addEventListener('mousedown', function(event)
 {
-  
-   if( event.clientX < cvWidth && event.clientY < cvHeight )
-   {	 
-	pointListX.push( event.clientX );
-	pointListY.push( event.clientY );
-	numPoints++;
-   }	
+	drag = true;
+
+	for( let i = 0; i < numPoints; i++ )
+	{
+		var d = Math.hypot( pointListX[i] - event.clientX, pointListY[i] - event.clientY );
+
+		if( d < SELECT_THRESH )
+		{
+			selected = i;
+		}
+	}
 });
 
+window.addEventListener('mousemove', function(event)
+{
+	if( drag )
+	{
+		var mouseX = event.clientX;
+		var mouseY = event.clientY;
+
+		pointListX[ selected ] = mouseX;
+		pointListY[ selected ] = mouseY;
+	}
+});
+
+window.addEventListener('mouseup', function(event) 
+{
+   if( event.clientX < cvWidth && event.clientY < cvHeight && drag)
+   {	 
+
+	if(selected == -1)
+	{
+		pointListX.push( event.clientX );
+		pointListY.push( event.clientY );
+		numPoints++;
+	}
+   }	
+   drag = false;
+   selected = -1;
+});
 </script>
 
 </body>
