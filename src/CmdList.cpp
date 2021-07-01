@@ -56,21 +56,48 @@ namespace CmdList
                         int g = _args[1];
                         int b = _args[2];
 
-			std::cout << "col: " << r << "," << g << "," << b << std::endl;
-			Renderer2D::clearBlueprint();
-			for( int i = 3; i < numArgs; i += 2 )
-			{
-				int x = _args[i];
-				int y = _args[i+1];
-				
-				P2 p(x, y, r, g, b, false);
-				Renderer2D:: addToBlueprint( p );				
-				std:: cout << "point: " << x << "," << y << std::endl;	
+			int numPts = ( numArgs - 3 ) / 2;
 
-			}
-			Renderer2D::renderFigure();
-			// now send points to the laser renderer
-                                                                                                                                                                                                                         extern const P2 getLastPoint();
+			if(numPts > 0)
+			{
+				P2 points[ numPts ];			
+				int ptIndx=0;	
+				for( int i = 3; i < numArgs; i += 2 )
+				{
+					int x = _args[i];
+					int y = _args[i+1];
+				
+					points[ptIndx++] = P2( x, y, r, g, b, false );
+				}
+
+				Renderer2D::clearBlueprint();
+
+				for( int i = 1; i < numPts; i++ )
+				{
+					P2 p0 = points[ i - 1];
+					P2 p1 = points[ i    ];
+				
+					float interpSize = 5.0;
+
+    					float lineLength = sqrt( pow(p1.x - p0.x, 2) +  
+        	                     				 pow(p1.y - p0.y, 2) * 1.0); 
+					Renderer2D:: addToBlueprint( p0 );
+					for( float t = 0.0; t <= lineLength; t += interpSize )
+    					{
+					        float x = JUtils::map( t, 0, lineLength, p0.x, p1.x );
+					        float y = JUtils::map( t, 0, lineLength, p0.y, p1.y );
+
+						P2 p ( x, y, r, g, b, false );
+					
+						Renderer2D:: addToBlueprint( p );
+					}
+					Renderer2D:: addToBlueprint( p1 );
+					//P2 p(x, y, r, g, b, false);
+                                	//Renderer2D:: addToBlueprint( p );
+				}
+				Renderer2D::renderFigure();
+				// now send points to the laser renderer
+                        }                                                                                                                                                                                                 extern const P2 getLastPoint();
 			
 		}
 
