@@ -3,10 +3,14 @@
 #include "RenderLoop.h"
 #include "JayUtils.h"
 #include "P2.h"
+#include "simpleson/json.h"
+#include <iostream>
+#include <fstream>
 
 namespace Renderer2D 
 {
 
+const string   pointSaveFile = "points_saved.json";
 
 const uint16_t MAX_MIRRORS_ADX = 4095;
 const uint16_t MIN_MIRRORS_ADX = 0;
@@ -27,6 +31,7 @@ const float minY = -100.0;
 const float maxY =  100.0;
 
 // 2) the "modelview" matrix (translation, rotation and scaling):
+extern uint16_t numframeBufferPoints;
 extern P2 center;
 extern float angle;
 extern float scaleFactor;
@@ -49,6 +54,8 @@ extern bool colorRed; // TODO: make a proper color object/struct (not just on/of
 	extern void addToBlueprint(const P2 &_newPoint);
 
 	extern void renderFigure(); // render with current pose transformation
+
+	extern void savePoints( string filename = pointSaveFile );
 
 	//namespace { // "private"
 		//extern PointBuffer bluePrintArray;

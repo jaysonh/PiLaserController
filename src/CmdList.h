@@ -40,4 +40,6 @@ namespace CmdList
 	extern int addShape( int * _args, int numArgs );
 
 	extern int restartApp( int * _args, int numArgs );
+
+	extern int savePoints( int * _args, int numArgs );
 }

@@ -9,7 +9,7 @@ P2 center(0,0);   // note (0,0) in "renderer" coordinates is the center of mirro
 float angle = 0;
 float scaleFactor = 1.0;
 bool colorRed = true;
-
+uint16_t numframeBufferPoints=0;
 uint16_t sizeBlueprint = 0;   // this would not be necessary if using an STL container. It is
 // just the size of the current bluepring array, modified and set when drawing a figure (see
 // graphic primitives)
@@ -82,7 +82,7 @@ void renderFigure() {
         // but also after modifying pose to avoid approximation errors.
                ;
         // Draw the figure with proper translation, rotation and scale on the "hidden" buffer:
-        uint16_t numframeBufferPoints = 0;
+        numframeBufferPoints = 0;
         for (uint16_t i = 0; i < sizeBlueprint; i++) 
         {
                 P2 point(bluePrintArray[i]);
@@ -106,4 +106,61 @@ void renderFigure() {
         	renderFigure();
 	}
 
+	// save all points into a json file
+	void savePoints( string filename )
+	{
+			
+		//std::cout << "saving points" << std::endl;
+		//json::JSON jsonObj;
+		json::jobject jsonObj;
+
+		jsonObj["numPoints"] = numframeBufferPoints;
+
+		std::vector<json::jobject> points;
+		
+		for(int i = 0; i < numframeBufferPoints; i++)
+		{
+			json::jobject point;
+			point["x"] = (int)frameBuffer[i].x; // problem saving floats?
+			point["y"] = (int)frameBuffer[i].y; // problem saving floats?
+		
+			points.push_back( point );
+		}
+			
+		jsonObj["points"] = points;
+
+		std::string serial = (std::string)jsonObj;
+
+		ofstream myfile ("example.txt");
+  		
+		if (myfile.is_open())
+  		{
+			myfile << serial << endl;			
+
+    			myfile.close();
+  		}                
+		
+
+		 ifstream myFile_Handler;
+                string myLine;
+                std::string jsonStr = "";
+
+                // File Open in the Read Mode
+                myFile_Handler.open("example.txt" );
+
+                if( myFile_Handler.is_open() )
+                {
+                        // read the file and store it in a string
+                        while(getline(myFile_Handler, myLine))
+                        {
+                                jsonStr += myLine;
+                        }
+
+                        myFile_Handler.close();
+		}
+
+		json::jobject result = json::jobject::parse( jsonStr );
+
+				
+	}
 }

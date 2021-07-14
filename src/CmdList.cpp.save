@@ -15,6 +15,11 @@ namespace CmdList
 		commands.push_back( Cmd( "save",     &CmdList::savePoints ));
 	}
 
+	int savePoints( int * _args, int _numArgs )
+	{
+		
+		return 0;
+	}
 	int exitApp( int *_args, int _numArgs )
 	{
 		AppControl::exitApp();
@@ -108,13 +113,6 @@ namespace CmdList
 	int restartApp( int * _args, int numArgs )
 	{
 		AppControl::restart();
-		return 0;
-	}
-
-	int savePoints( int * _args, int numArgs )
-	{
-		Renderer2D::savePoints();
-		
 		return 0;
 	}
 }
