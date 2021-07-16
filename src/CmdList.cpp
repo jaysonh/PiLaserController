@@ -117,4 +117,11 @@ namespace CmdList
 		
 		return 0;
 	}
+
+	int loadPoints( int * _args, int numArgs )
+	{
+		Renderer2D::loadPoints();
+
+		return 0;
+	}
 }

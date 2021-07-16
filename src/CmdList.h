@@ -42,4 +42,6 @@ namespace CmdList
 	extern int restartApp( int * _args, int numArgs );
 
 	extern int savePoints( int * _args, int numArgs );
+
+	extern int loadPoints( int * _args, int numArgs );
 }

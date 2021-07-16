@@ -24,6 +24,7 @@ Your browser does not support the HTML canvas tag.
 <br/>
 
 <button type="savePoints" id="savePointsBtn"     onclick= "savePoints()" >save points</button>
+<button type="loadPoints" id="loadPointsBtn"     onclick= "loadPoints()" >load points</button>
 <script>
 
 let pointListX = new Array();
@@ -144,6 +145,16 @@ function savePoints()
 {
 	$.ajax({                                                                                                                                                                                                                 type: "POST",
                 url:  'savePoints.php',
+               });
+}
+
+/*
+ * Saves points on the laser so next time it boots it will load them
+ */
+function loadPoints()
+{
+        $.ajax({  
+		url: 'loadPoints.php',
                });
 }
 
