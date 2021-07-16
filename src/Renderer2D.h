@@ -6,6 +6,7 @@
 #include "simpleson/json.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 namespace Renderer2D 
 {
@@ -53,10 +54,11 @@ extern bool colorRed; // TODO: make a proper color object/struct (not just on/of
 	extern bool clipLimits(P2 &_point);
 	extern void addToBlueprint(const P2 &_newPoint);
 
+	extern void setPoints( const P2 * _points, int _numPoints ); // set the points directly from an array, no translation or mapping
 	extern void renderFigure(); // render with current pose transformation
 
 	extern void savePoints( string filename = pointSaveFile );
-
+	extern void loadPoints( string filename = pointSaveFile );
 	//namespace { // "private"
 		//extern PointBuffer bluePrintArray;
 		extern P2 bluePrintArray[ RenderLoop::MAX_NUM_POINTS ];

@@ -120,18 +120,25 @@ void renderFigure() {
 		
 		for(int i = 0; i < numframeBufferPoints; i++)
 		{
-			json::jobject point;
-			point["x"] = (int)frameBuffer[i].x; // problem saving floats?
-			point["y"] = (int)frameBuffer[i].y; // problem saving floats?
+			stringstream si;
+			si << i;
 		
-			points.push_back( point );
+			std::string xStr = "x" + si.str();
+			std::string yStr = "y" + si.str();
+
+			jsonObj[xStr] = (int)frameBuffer[i].x;
+			jsonObj[yStr] = (int)frameBuffer[i].y;
+			//json::jobject point;
+			//point["x"] = (int)frameBuffer[i].x; // problem saving floats?
+			//point["y"] = (int)frameBuffer[i].y; // problem saving floats?
+			//points.push_back( point );
 		}
 			
-		jsonObj["points"] = points;
+		//jsonObj["points"] = points;
 
 		std::string serial = (std::string)jsonObj;
 
-		ofstream myfile ("example.txt");
+		ofstream myfile ( filename );
   		
 		if (myfile.is_open())
   		{
@@ -139,14 +146,16 @@ void renderFigure() {
 
     			myfile.close();
   		}                
-		
+	}		
 
+	void loadPoints( string filename)
+	{
 		 ifstream myFile_Handler;
                 string myLine;
                 std::string jsonStr = "";
 
                 // File Open in the Read Mode
-                myFile_Handler.open("example.txt" );
+                myFile_Handler.open( filename );
 
                 if( myFile_Handler.is_open() )
                 {
@@ -158,9 +167,49 @@ void renderFigure() {
 
                         myFile_Handler.close();
 		}
-
+		
 		json::jobject result = json::jobject::parse( jsonStr );
 
-				
+		int numPoints =  atoi( result.get( "numPoints"  ).c_str() );
+		cout << "numPoints from json: " << numPoints << endl; //result["numPoints"] <<endl;
+
+		//cout << "pointsStr: "<< result.get("points") <<endl;
+		//json::jobject allPoints = result["points"];
+
+		//cout << "retrieved points joson" <<endl;
+		//cout << (std::string)allPoints << endl;
+		//json::jtype::jarray pointsArr = 
+
+		P2 newPoints[numPoints];
+		for( int i = 0; i < numPoints; i++)
+		{
+			stringstream si;                                                                                                                                                                                                   si << i;                                                                                                                                                                                   
+                        std::string xStr = "x" + si.str();
+                        std::string yStr = "y" + si.str();
+
+			int xPos = atoi( result.get(xStr).c_str() );
+			int yPos = atoi( result.get(yStr).c_str() );
+
+			newPoints[i].x = xPos;
+			newPoints[i].y = yPos;
+		}				
+
+		if(numPoints > 0)
+		{
+			setPoints( newPoints, numPoints );
+		}
+	}
+
+	void setPoints( const P2 * _points, int _numPoints)
+	{
+		clearBlueprint();
+
+		for(int i = 0; i < _numPoints; i++)
+		{
+			frameBuffer[i] = _points[i];
+			
+		}
+		numframeBufferPoints = _numPoints;
+		RenderLoop::setDisplayBuffer( frameBuffer, numframeBufferPoints );
 	}
 }
