@@ -19,7 +19,7 @@ namespace AppControl
                 Hardware::close();
 
                 // stop the communication listener
-                CmdControl::closeComm();                                                                                                                                                                         
+                CmdControl::closeComm(); // this should block until finished                                                                                                                                                                         
                 // hard exit the application
                 exit(EXIT_FAILURE);
 	}

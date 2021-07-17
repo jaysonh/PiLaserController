@@ -22,6 +22,7 @@ namespace CmdControl
 	void closeComm()
 	{
 		threadRunning = false;
+		std::remove( myfifo );
 	}
 
 	void * update(void *)
