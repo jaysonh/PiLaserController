@@ -128,13 +128,14 @@ void renderFigure() {
 
 			jsonObj[xStr] = (int)frameBuffer[i].x;
 			jsonObj[yStr] = (int)frameBuffer[i].y;
-			//json::jobject point;
-			//point["x"] = (int)frameBuffer[i].x; // problem saving floats?
-			//point["y"] = (int)frameBuffer[i].y; // problem saving floats?
-			//points.push_back( point );
+			
+			json::jobject point;
+			point["x"] = (int)frameBuffer[i].x; // problem saving floats?
+			point["y"] = (int)frameBuffer[i].y; // problem saving floats?
+			points.push_back( point );
 		}
 			
-		//jsonObj["points"] = points;
+		jsonObj["points"] = points;
 
 		std::string serial = (std::string)jsonObj;
 
@@ -150,7 +151,7 @@ void renderFigure() {
 
 	void loadPoints( string filename)
 	{
-		 ifstream myFile_Handler;
+		ifstream myFile_Handler;
                 string myLine;
                 std::string jsonStr = "";
 
@@ -171,7 +172,6 @@ void renderFigure() {
 		json::jobject result = json::jobject::parse( jsonStr );
 
 		int numPoints =  atoi( result.get( "numPoints"  ).c_str() );
-		cout << "numPoints from json: " << numPoints << endl; //result["numPoints"] <<endl;
 
 		//cout << "pointsStr: "<< result.get("points") <<endl;
 		//json::jobject allPoints = result["points"];
@@ -181,22 +181,40 @@ void renderFigure() {
 		//json::jtype::jarray pointsArr = 
 
 		P2 newPoints[numPoints];
+
+		/*
 		for( int i = 0; i < numPoints; i++)
 		{
 			stringstream si;                                                                                                                                                                                                   si << i;                                                                                                                                                                                   
                         std::string xStr = "x" + si.str();
                         std::string yStr = "y" + si.str();
 
-			int xPos = atoi( result.get(xStr).c_str() );
-			int yPos = atoi( result.get(yStr).c_str() );
+			int xPos = atoi( result.get( xStr ).c_str() );
+			int yPos = atoi( result.get( yStr ).c_str() );
 
 			newPoints[i].x = xPos;
 			newPoints[i].y = yPos;
 		}				
 
-		if(numPoints > 0)
+		if( numPoints > 0 )
 		{
 			setPoints( newPoints, numPoints );
+		}*/
+
+		// get points from json array
+		std::vector< json::jobject > pointObj = result["points"];
+		for (int i =0; i < pointObj.size();i++)
+		{
+			int xPos = atoi( pointObj[i].get( "x" ).c_str() );
+			int yPos = atoi( pointObj[i].get( "y" ).c_str() );
+
+			newPoints[i].x = xPos; 
+			newPoints[i].y = yPos; 
+		}
+
+		if( numPoints > 0 )
+		{
+			setPoints( newPoints, numPoints ); 
 		}
 	}
 

@@ -13,6 +13,7 @@ namespace CmdList
 		commands.push_back( Cmd( "addShape", &CmdList::addShape ));
 		commands.push_back( Cmd( "restart",  &CmdList::restartApp ));
 		commands.push_back( Cmd( "save",     &CmdList::savePoints ));
+		commands.push_back( Cmd( "load",     &CmdList::loadPoints ));
 	}
 
 	int exitApp( int *_args, int _numArgs )
