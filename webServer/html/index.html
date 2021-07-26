@@ -1,25 +1,308 @@
+<!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width" />
-<title>PiLaser Control</title>
+   <script src="jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
-        <body>
-        Blank Laser:
-        <form method="get" action="setBlank.php">
-                <input type="submit" value="BLANK"   name="BLANK">
-                <input type="submit" value="UNBLANK" name="UNBLANK">
-        </form>
-	Exit Laser Application:
-	<form method="get" action="laserControl.php">
-		<input type="submit" value="EXIT" name="ON">
-	</form>
-	<div class="slidecontainer">
-		<label for="points">Red:</label>
-		<input type="range" id="colRed" name="colRed" min="0" max="255">
+<body>
 
-	</div>
+<canvas id="myCanvas" width="400" height="400" style="border:1px solid #000000;">
+Your browser does not support the HTML canvas tag.
+</canvas>
+<br/>
 
-        <?php
-        ?>
-        </body>
+<button type="submit" id="restartBtn"  onclick= "sendRestart()">restart</button>
+<button type="submit" id="exitBtn"     onclick= "sendExit()">exit</button>
+<button type="submit" id="clearPtsBtn" onclick= "clearPoints()">clearPoints</button>
+<button type="submit" id="sendPtsBtn"  onclick= "sendPoints()" >sendPoints</button>
+<input  type="color"  id="laserColour" name="head" value="#e66465">
+<br/>
+
+<button type="submit" id="addRectBtn"     onclick= "addRectangle()" >add rectangle</button>
+<button type="submit" id="addCircleBtn"   onclick= "addCircle()"    >add circle</button>
+<button type="submit" id="addTriangleBtn" onclick= "addTriangle()"  >add triangle</button>
+<button type="submit" id="addLineBtn"     onclick= "addLine()"      >add line</button>
+<br/>
+
+<button type="savePoints" id="savePointsBtn"     onclick= "savePoints()" >save points</button>
+<button type="loadPoints" id="loadPointsBtn"     onclick= "loadPoints()" >load points</button>
+<script>
+
+let pointListX = new Array();
+let pointListY = new Array();
+
+var SELECT_THRESH = 20;
+
+var numPoints =  0;
+var selected  = -1;
+
+var mouseX = 0;
+var mouseY = 0;
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+
+var cvWidth  = c.width;
+var cvHeight = c.height;
+
+function map(x, in_min, in_max, out_min, out_max) 
+{
+      return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+function hexToRgb(hex) 
+{
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  
+  return result ? 
+  {
+    r: parseInt( result[1], 16 ),
+    g: parseInt( result[2], 16 ),
+    b: parseInt( result[3], 16 )
+  } : null;
+}
+
+function addCircle()
+{
+	clearPoints();
+
+	var circleWidth = cvWidth/4;
+
+	for( var i = 0.0; i < Math.PI * 2.0; i+= 0.1)
+	{
+		pointListX.push( cvWidth  / 2 + Math.cos(i) * circleWidth );
+		pointListY.push( cvHeight / 2 + Math.sin(i) * circleWidth );
+		numPoints++;
+	}
+
+	pointListX.push( cvWidth  / 2 + Math.cos(0) * circleWidth );
+	pointListY.push( cvHeight / 2 + Math.sin(0) * circleWidth );
+	numPoints++;
+}
+
+function addTriangle()
+{
+	clearPoints();
+
+	var rectWidth = cvWidth / 2;
+        pointListX.push( cvWidth  / 2  );
+        pointListY.push( cvHeight / 2  - rectWidth/2);
+
+	pointListX.push( cvWidth  / 2  - rectWidth/2 );
+	pointListY.push( cvHeight / 2  + rectWidth/2 );
+
+	pointListX.push( cvWidth  / 2  + rectWidth/2 );
+	pointListY.push( cvHeight / 2  + rectWidth/2 ); 	
+
+	pointListX.push( cvWidth  / 2  );
+	pointListY.push( cvHeight / 2  - rectWidth/2);
+
+	numPoints = 4;
+}
+
+function addLine()
+{
+	clearPoints();
+
+	var rectWidth = cvWidth / 2;
+
+        pointListX.push( cvWidth  / 2 + (rectWidth / 2 ) );
+        pointListY.push( cvHeight / 2 );
+
+        pointListX.push( cvWidth  / 2 - (rectWidth / 2 ) );
+        pointListY.push( cvHeight / 2 );
+
+	numPoints = 2;
+}
+
+function addRectangle()
+{
+	clearPoints();
+	
+	var rectWidth = cvWidth / 2;
+	
+	pointListX.push( cvWidth  / 2 + ( rectWidth / 2 ) );
+	pointListY.push( cvHeight / 2 + ( rectWidth / 2 ) );
+	
+	pointListX.push( cvWidth  / 2 - ( rectWidth / 2 ) );
+	pointListY.push( cvHeight / 2 + ( rectWidth / 2 ) );
+	
+        pointListX.push( cvWidth  / 2 - ( rectWidth / 2 ) );
+        pointListY.push( cvHeight / 2 - ( rectWidth / 2 ) );
+	
+	pointListX.push( cvWidth  / 2 + ( rectWidth / 2 ) );                                                                                                                                                                 pointListY.push( cvHeight / 2 - rectWidth / 2 ); 
+	pointListY.push( cvHeight / 2 - ( rectWidth / 2 ) );
+	
+	pointListX.push( cvWidth  / 2 + ( rectWidth / 2 ) );
+	pointListY.push( cvHeight / 2 + ( rectWidth / 2 ) );
+	
+	numPoints = 5;
+}
+
+/*
+ * Saves points on the laser so next time it boots it will load them
+ */
+function savePoints()
+{
+	$.ajax({                                                                                                                                                                                                                 type: "POST",
+                url:  'savePoints.php',
+               });
+}
+
+/*
+ * Saves points on the laser so next time it boots it will load them
+ */
+function loadPoints()
+{
+        $.ajax({  
+		url: 'loadPoints.php',
+               });
+}
+
+function sendPoints()
+{
+	var pointList = [];
+	pointList.push("addShape");
+
+	// Add the colour
+        var rgbLaserCol = hexToRgb( document.getElementById("laserColour").value );
+        console.log("laserCol: " + rgbLaserCol.r + "," + rgbLaserCol.g + "," + rgbLaserCol.b);
+	
+	pointList.push( rgbLaserCol.r );
+	pointList.push( rgbLaserCol.g );
+	pointList.push( rgbLaserCol.b );
+
+  	for(let i = 0; i < numPoints;i++)
+  	{
+		var mX = map( pointListX[i], 0, cvWidth,  -100, 100 );
+		var mY = map( pointListY[i], 0, cvHeight, -100, 100 );
+
+        	pointList.push( mX );
+        	pointList.push( mY );
+  	}
+
+	
+	console.log("pointList.length: " + pointList.length);
+
+	var rgbLaserCol = hexToRgb( document.getElementById("laserColour").value );	
+  	
+	console.log("laserCol: " + rgbLaserCol.r + "," + rgbLaserCol.g + "," + rgbLaserCol.b);
+	$.ajax({
+       		type: "POST",
+       		url:  'sendPoints.php',
+       		data: "pointList="+ pointList,
+       			success: function() 
+			{
+            			$("#lengthQuestion").fadeOut('slow');
+       			}
+  		});	
+}
+
+function sendExit()
+{
+	$.ajax({
+                type: "POST",
+                url:  'sendExit.php',
+                });
+}
+
+function sendRestart()
+{
+        $.ajax({
+                type: "POST",
+                url:  'sendRestart.php',
+                }); 
+}
+
+function clearPoints() 
+{
+  numPoints = 0;
+
+  pointListX = new Array();
+  pointListY = new Array();
+}
+var fps = 30;
+
+
+function draw() 
+{
+    setTimeout(function() 
+    {
+        requestAnimationFrame(draw);
+
+  	// call again next time we can draw
+  	ctx.clearRect(0, 0, cvWidth, cvHeight);
+
+  	ctx.strokeStyle = document.getElementById("laserColour").value;
+  	ctx.stroke();
+	ctx.beginPath();
+  	for (let i = 0; i < numPoints; i++) {
+		if(i == 0)
+			ctx.moveTo( pointListX[i], pointListY[i]);
+		else
+			ctx.lineTo(pointListX[i], pointListY[i]);
+		//ctx.rect( pointListX[i], pointListY[i], 5, 5);
+  	}
+
+	// draw circles over the top of points
+	for (let i = 0; i < numPoints; i++) {
+		var size = 10.0;
+		if(selected === i)
+			ctx.fillStyle = "#00FF00";
+		else 
+			ctx.fillStyle = document.getElementById("laserColour").value;
+                ctx.fillRect( pointListX[i] - size / 2, pointListY[i] - size / 2, size, size);
+        }
+    }, 1000 / fps);
+}
+draw();
+
+// click handler to add random rects
+
+let drag = false;
+
+window.addEventListener('mousedown', function(event)
+{
+	drag = true;
+
+	for( let i = 0; i < numPoints; i++ )
+	{
+		var d = Math.hypot( pointListX[i] - event.clientX, pointListY[i] - event.clientY );
+
+		if( d < SELECT_THRESH )
+		{
+			selected = i;
+		}
+	}
+});
+
+window.addEventListener('mousemove', function(event)
+{
+	if( drag )
+	{
+		var mouseX = event.clientX;
+		var mouseY = event.clientY;
+
+		pointListX[ selected ] = mouseX;
+		pointListY[ selected ] = mouseY;
+	}
+});
+
+window.addEventListener('mouseup', function(event) 
+{
+   if( event.clientX < cvWidth && event.clientY < cvHeight && drag)
+   {	 
+	if(selected == -1)
+	{
+		pointListX.push( event.clientX );
+		pointListY.push( event.clientY );
+		numPoints++;
+	}
+   }	
+   drag = false;
+   selected = -1;
+});
+
+</script>
+</body>
 </html>
+
