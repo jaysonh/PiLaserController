@@ -1,3 +1,4 @@
+
 #include "RenderLoop.h"
 
 namespace RenderLoop
@@ -5,7 +6,9 @@ namespace RenderLoop
 	P2 displayBuffer1[ MAX_NUM_POINTS ];
 	P2 displayBuffer2[ MAX_NUM_POINTS ];
 
-	LaserCol lastCol(0,0,0);
+	LaserCol lastCol  (0,0,0);
+	LaserCol blankCol (0,0,0);
+
 	bool 	threadRunning = true;
 
 	P2 	* ptrCurrentDisplayBuffer, *ptrHiddenDisplayBuffer;
@@ -100,14 +103,30 @@ namespace RenderLoop
 				}
 				lastCol = col;
 				Hardware::setLaserPos((int)adcX, (int)adcY);
+				usleep(ConfigLoader::laserSettings.displayWaitTime);
 
 				// move to next point
 				//readingHead = (readingHead + 1) % sizeBufferDisplay;
+
+				// turn laser back on if first pos				
+				if ( readingHead == 0)
+				{
+					//Hardware::setLaserCol( col );
+					//usleep( 20 );
+				}
 				readingHead++;
-				if(readingHead >= sizeBufferDisplay) readingHead = 0;
+				
+				// turn laser off if last pos
+				if(readingHead >= sizeBufferDisplay)
+				{
+					readingHead = 0;
+					// blank at end
+					//Hardware::setLaserCol( blankCol );
+					//usleep( 20 );
+				}
 			}
 
-			usleep(ConfigLoader::laserSettings.displayWaitTime);
+			//usleep(ConfigLoader::laserSettings.displayWaitTime);
 		}
 		// Make sure to turn laser off at the end
 		Hardware::setLaserCol( 0, 0, 0 );

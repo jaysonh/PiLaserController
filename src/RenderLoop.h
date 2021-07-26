@@ -6,7 +6,7 @@
 
 namespace RenderLoop
 {
-	const uint16_t MAX_NUM_POINTS    = 100;
+	const uint16_t MAX_NUM_POINTS    = 200;
 	const uint16_t CENTER_MIRROR_ADX = 2047;
 	const uint16_t CENTER_MIRROR_ADY = 2047;
 
@@ -25,5 +25,6 @@ namespace RenderLoop
 	extern uint16_t sizeBufferDisplay;
 	extern bool resizeFlag;
 
+	extern LaserCol blankCol;
 	extern LaserCol lastCol;
 }

@@ -67,16 +67,14 @@ function addCircle()
 
 	var circleWidth = cvWidth/4;
 
-	for( var i = 0.0; i < Math.PI * 2.0; i+= 0.1)
+	for( var i = 0.0; i < Math.PI * 2.0; i+= 0.2)
 	{
-		pointListX.push( cvWidth  / 2 + Math.cos(i) * circleWidth );
-		pointListY.push( cvHeight / 2 + Math.sin(i) * circleWidth );
-		numPoints++;
+		addPoint( cvWidth  / 2 + Math.cos(i) * circleWidth,
+		 	  cvHeight / 2 + Math.sin(i) * circleWidth  );
 	}
 
-	pointListX.push( cvWidth  / 2 + Math.cos(0) * circleWidth );
-	pointListY.push( cvHeight / 2 + Math.sin(0) * circleWidth );
-	numPoints++;
+	addPoint( cvWidth  / 2 + Math.cos(0) * circleWidth,
+		  cvHeight / 2 + Math.sin(0) * circleWidth );
 }
 
 function addTriangle()
@@ -84,19 +82,18 @@ function addTriangle()
 	clearPoints();
 
 	var rectWidth = cvWidth / 2;
-        pointListX.push( cvWidth  / 2  );
-        pointListY.push( cvHeight / 2  - rectWidth/2);
 
-	pointListX.push( cvWidth  / 2  - rectWidth/2 );
-	pointListY.push( cvHeight / 2  + rectWidth/2 );
+        addPoint( cvWidth  / 2,
+        	  cvHeight / 2  - rectWidth/2);
 
-	pointListX.push( cvWidth  / 2  + rectWidth/2 );
-	pointListY.push( cvHeight / 2  + rectWidth/2 ); 	
+	addPoint( cvWidth  / 2  - rectWidth/2,
+		  cvHeight / 2  + rectWidth/2 );
 
-	pointListX.push( cvWidth  / 2  );
-	pointListY.push( cvHeight / 2  - rectWidth/2);
+	addPoint( cvWidth  / 2  + rectWidth/2,
+	          cvHeight / 2  + rectWidth/2 ); 	
 
-	numPoints = 4;
+	addPoint( cvWidth  / 2,
+		  cvHeight / 2  - rectWidth/2);
 }
 
 function addLine()
@@ -105,13 +102,11 @@ function addLine()
 
 	var rectWidth = cvWidth / 2;
 
-        pointListX.push( cvWidth  / 2 + (rectWidth / 2 ) );
-        pointListY.push( cvHeight / 2 );
+        addPoint( cvWidth  / 2 + (rectWidth / 2 ),
+        	  cvHeight / 2 );
 
-        pointListX.push( cvWidth  / 2 - (rectWidth / 2 ) );
-        pointListY.push( cvHeight / 2 );
-
-	numPoints = 2;
+        addPoint( cvWidth  / 2 - (rectWidth / 2 ),
+        	  cvHeight / 2 );
 }
 
 function addRectangle()
@@ -120,22 +115,20 @@ function addRectangle()
 	
 	var rectWidth = cvWidth / 2;
 	
-	pointListX.push( cvWidth  / 2 + ( rectWidth / 2 ) );
-	pointListY.push( cvHeight / 2 + ( rectWidth / 2 ) );
+	addPoint( cvWidth  / 2 + ( rectWidth / 2 ),
+	          cvHeight / 2 + ( rectWidth / 2 ) );
 	
-	pointListX.push( cvWidth  / 2 - ( rectWidth / 2 ) );
-	pointListY.push( cvHeight / 2 + ( rectWidth / 2 ) );
+	addPoint( cvWidth  / 2 - ( rectWidth / 2 ),
+	 	  cvHeight / 2 + ( rectWidth / 2 ) );
 	
-        pointListX.push( cvWidth  / 2 - ( rectWidth / 2 ) );
-        pointListY.push( cvHeight / 2 - ( rectWidth / 2 ) );
+        addPoint( cvWidth  / 2 - ( rectWidth / 2 ),
+                  cvHeight / 2 - ( rectWidth / 2 ) );
 	
-	pointListX.push( cvWidth  / 2 + ( rectWidth / 2 ) );                                                                                                                                                                 pointListY.push( cvHeight / 2 - rectWidth / 2 ); 
-	pointListY.push( cvHeight / 2 - ( rectWidth / 2 ) );
-	
-	pointListX.push( cvWidth  / 2 + ( rectWidth / 2 ) );
-	pointListY.push( cvHeight / 2 + ( rectWidth / 2 ) );
-	
-	numPoints = 5;
+	addPoint( cvWidth  / 2 + ( rectWidth / 2 ),
+                  cvHeight / 2 - ( rectWidth / 2 ) );
+
+	addPoint( cvWidth  / 2 + ( rectWidth / 2 ),
+ 		  cvHeight / 2 + ( rectWidth / 2 ) );
 }
 
 /*
@@ -208,9 +201,16 @@ function sendExit()
 function sendRestart()
 {
         $.ajax({
-                type: "POST",
-                url:  'sendRestart.php',
+	                type: "POST",
+        	        url:  'sendRestart.php',
                 }); 
+}
+
+function addPoint( addX, addY )
+{
+	pointListX.push( Math.round( addX ) );
+	pointListY.push( Math.round( addY ) );
+	numPoints++;
 }
 
 function clearPoints() 
