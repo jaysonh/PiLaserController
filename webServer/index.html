@@ -10,11 +10,13 @@ Your browser does not support the HTML canvas tag.
 </canvas>
 <br/>
 
-<button type="submit" id="restartBtn"  onclick= "sendRestart()">restart</button>
-<button type="submit" id="exitBtn"     onclick= "sendExit()">exit</button>
-<button type="submit" id="clearPtsBtn" onclick= "clearPoints()">clearPoints</button>
-<button type="submit" id="sendPtsBtn"  onclick= "sendPoints()" >sendPoints</button>
-<input  type="color"  id="laserColour" name="head" value="#e66465">
+<button type="submit"   id="restartBtn"  onclick= "sendRestart()">restart</button>
+<button type="submit"   id="exitBtn"     onclick= "sendExit()"   >exit</button>
+<button type="submit"   id="clearPtsBtn" onclick= "clearPoints()">clearPoints</button>
+<button type="submit"   id="sendPtsBtn"  onclick= "sendPoints()" >sendPoints</button>
+<input  type="color"    id="laserColour" name="head" value="#ff0000">
+<input  type="checkbox" id="mirrorX">mirrorX</input>
+<input  type="checkbox" id="mirrorY">mirrorY</input>
 <br/>
 
 <button type="submit" id="addRectBtn"     onclick= "addRectangle()" >add rectangle</button>
@@ -158,8 +160,7 @@ function sendPoints()
 
 	// Add the colour
         var rgbLaserCol = hexToRgb( document.getElementById("laserColour").value );
-        console.log("laserCol: " + rgbLaserCol.r + "," + rgbLaserCol.g + "," + rgbLaserCol.b);
-	
+
 	pointList.push( rgbLaserCol.r );
 	pointList.push( rgbLaserCol.g );
 	pointList.push( rgbLaserCol.b );
@@ -168,6 +169,16 @@ function sendPoints()
   	{
 		var mX = map( pointListX[i], 0, cvWidth,  -100, 100 );
 		var mY = map( pointListY[i], 0, cvHeight, -100, 100 );
+
+		if( document.getElementById("mirrorX").checked == true )
+		{
+			mX = -mX;
+		}
+
+		if( document.getElementById("mirrorX").checked == true )
+		{
+			mY = -mY;
+		}
 
         	pointList.push( mX );
         	pointList.push( mY );
@@ -231,9 +242,14 @@ function draw()
 
   	// call again next time we can draw
   	ctx.clearRect(0, 0, cvWidth, cvHeight);
-
+	ctx.rect(0, 0, cvWidth, cvHeight);
+	ctx.strokeStyle = '#000000';
+  	ctx.fillStyle   = '#cccccc';
+  	ctx.fill();
+	
   	ctx.strokeStyle = document.getElementById("laserColour").value;
-  	ctx.stroke();
+  	ctx.fillStyle ='transparent';
+	ctx.stroke();
 	ctx.beginPath();
   	for (let i = 0; i < numPoints; i++) {
 		if(i == 0)
